@@ -21,14 +21,14 @@ h3 {
 
 .button {
   display: block;
-  width: 80px;
+  width: fit-content;
+  height: 80 px;
   background-color: #1abc9c;
   border: none;
   color: white;
   padding: 13px 30px;
   text-decoration: none;
   font-size: 25px;
-  margin: 0px auto 35px;
   cursor: pointer;
   border-radius: 4px;
 }

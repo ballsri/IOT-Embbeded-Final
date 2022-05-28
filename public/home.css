@@ -88,7 +88,7 @@
     border-bottom: 2px solid #9b9b9b;
     outline: 0;
     font-size: 1.3rem;
-    color: #fff;
+    color: #2c3e50;
     padding: 7px 0;
     background: transparent;
     transition: border-color 0.2s;
@@ -106,7 +106,7 @@
 
 .form__label {
     position: absolute;
-    top: 0;
+    top:0 ;
     display: block;
     transition: 0.2s;
     font-size: 1rem;
@@ -148,6 +148,7 @@
     padding: 7px 0;
     background: transparent;
 }
+
 
 #main-table {
     padding: 0;
