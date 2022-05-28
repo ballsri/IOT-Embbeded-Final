@@ -1,0 +1,74 @@
+/* for table elements */
+
+th,
+td {
+    padding: 18px 50px;
+    text-align: left;
+}
+
+/* for log table */
+/* container */
+.container-table {
+    width: fit-content;
+    /* min-height: 100vh; */
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 33px 30px;
+}
+
+/* for table itself */
+.log-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-sizing: border-box;
+}
+
+.table-head th {
+    font-size: larger;
+    color: #fff;
+    line-height: 1.4;
+    background-color: #16a085;
+    border-collapse: collapse;
+}
+
+/* round corner on top header */
+.table-head th:first-child {
+    border-radius: 15px 0 0 0;
+}
+
+.table-head th:last-child {
+    border-radius: 0 15px 0 0;
+}
+
+.log-table tbody tr {
+    background-color: #d6f7f0;
+}
+
+/* alternate row color */
+.log-table tbody tr:nth-child(even) {
+    background-color: #96f1d9;
+}
+
+/* round bottom */
+.log-table tbody tr:last-child td:first-child {
+    border-radius: 0 0 0 15px;
+}
+
+.log-table tbody tr:last-child td:last-child {
+    border-radius: 0 0 15px 0;
+}
+
+/* next/prev button */
+.log-redirect {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-self: flex-start;
+    margin: 10px 0;
+    gap: 5px;
+}

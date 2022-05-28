@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no\" />
+	<link rel="stylesheet" href="../style.css">
+	<link rel="stylesheet" href="../home.css">
+	<title>Hee CONTROL</title>
+
+</head>
+
+<body>
+	<h1>ESP8266 Hee CONTROL</h1>
+	<div class="body-container">
+		<!-- controller part -->
+		<div class="container-control">
+			<input type="hidden" id="time" value="<%= timeout %>">
+			<p style="font-size: 24px" id="water-status">Water Status: <% if(isActive){ %> On <% }else{%> Off <%}%>
+			</p>
+			<% if (isActive && !isDisabled) { %>
+				<button class="button button-on" id="button-status" type="button" onclick="btnStatus()">On</button>
+
+				<% } else if(isDisabled) { %>
+					<button class="button button-off" id="button-status" type="button" disabled>DISABLED</button>
+
+				
+				<% } else{ %>
+					<button class="button button-off" id="button-status" type="button" onclick="btnStatus()">OFF</button>
+					<%}%>
+
+						<p style="font-size: 24px">Amount of water to fill</p>
+
+						<div class="form__group field" id="water-value">
+							<% if(isActive){ %>
+								<label for="Amount" class="form__fieldblock">
+									Wait for Watering ...
+								</label>
+
+								<%} else { %>
+
+									<input type="input" class="form__field" placeholder="Amount" name="Amount"
+										id="water-amount" required />
+									<label for="Amount" class="form__label">Amount</label>
+
+									<button class="button button-log" id="submit-water" onclick="sendWater()">Submit</button>
+
+
+
+									<%} %>
+						</div>
+		</div>
+
+		<!-- info part -->
+		<div class="container-info">
+			<h2>Real-time Info</h2>
+			<div class="pill">
+				<h6>Soil Humidity</h6>
+				<p>1000</p>
+			</div>
+			<div class="pill">
+				<h6>Light</h6>
+				<p>1000</p>
+			</div>
+			<div class="pill">
+				<h6>Prev Watering</h6>
+				<p>1000</p>
+			</div>
+			<p>updated: //DATE//</p>
+			<p style="font-size: 24px">get Information</p>
+			<!-- <a class="button button-getinformation" href="/getinformation"
+          >SubmitXnoNeed</a
+        > -->
+			<a class="button button-log" href="/log">log</a>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+		integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+	<script src="../function.js"></script>
+</body>
+
+</html>
