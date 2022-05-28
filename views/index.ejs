@@ -55,22 +55,22 @@
 			<h2>Real-time Info</h2>
 			<div class="pill">
 				<h6>Soil Humidity</h6>
-				<p>1000</p>
+				<p id="humid"><%= latest[0].humid %></p>
 			</div>
 			<div class="pill">
 				<h6>Light</h6>
-				<p>1000</p>
+				<p id="light"><%= latest[0].light %></p>
 			</div>
 			<div class="pill">
 				<h6>Prev Watering</h6>
-				<p>1000</p>
+				<p id="water"><%= latest[0].water %></p>
 			</div>
-			<p>updated: //DATE//</p>
+			<p>updated: <%= (new Date(latest[0].time)).toLocaleString() %></p>
 			<p style="font-size: 24px">get Information</p>
 			<!-- <a class="button button-getinformation" href="/getinformation"
           >SubmitXnoNeed</a
         > -->
-			<a class="button button-log" href="/log">log</a>
+			<a class="button button-log" href="/log?id=0">log</a>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"

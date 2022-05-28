@@ -12,9 +12,12 @@ if(  timeout >=0){
 
 }
 
+setInterval(() => {
+    getInfo()
+}, 60000);
 
-
-
+const disableAmount = ' <label for="Amount" class="form__fieldblock">Wait for Watering ...</label>'
+const enableAmount = ' <input type="input" class="form__field" placeholder="Amount" name="Amount" id="water-amount" required /><label for="Amount" class="form__label">Amount</label><button class="button button-log" onclick="sendWater()" id="submit-water">Submit</button>'
 
 
 async function getInfo(){
@@ -33,7 +36,7 @@ async function getInfo(){
         })
     }).then((res)=> res.json())
 
-    if(result.status == 200){
+    if(result.status == "ok"){
         // console.log(result.body)
         $('#humid').html(result.body.humid);
         $('#light').html(result.body.light);
@@ -72,7 +75,7 @@ async function btnStatus(){
               water_status.innerText="Water Status: On"
                 button_status.innerText = "ON";
                 button_status.style.backgroundColor = "#1abc9c" ;
-                $('#water-value').html(' <label for="Amount" class="form__fieldblock">Wait for Watering ...</label>')
+                $('#water-value').html(disableAmount)
                 
     
         } else {
@@ -97,12 +100,20 @@ async function btnStatus(){
     // console.log(result.status)
         if(result.status == "ok"){
             // console.log(result.body)
-            
             water_status.innerText="Water Status: Off"
-            button_status.innerText= "OFF";
-            button_status.style.backgroundColor = "#34495e" ;
-            $('#water-value').html(' <input type="input" class="form__field" placeholder="Amount" name="Amount" id="water-amount" required /><label for="Amount" class="form__label">Amount</label><button class="button button-log" onclick="sendWater()" id="submit-water">Submit</button>')
-           
+            button_status.innerText= "COOLING DOWN";
+            button_status.style.backgroundColor = "#1abc9c" ;
+            $('#water-value').html(disableAmount)
+                
+            setTimeout(() => {
+                alert('Cooldown is done');
+                
+                water_status.innerText="Water Status: Off"
+                button_status.innerText= "OFF";
+                button_status.style.backgroundColor = "#34495e" ;
+                $('#water-value').html(enableAmount)
+               
+            }, 5000); // IMPORTANT time to control cooldown interval
         } else {
             alert("Error occured, can't turn off")
             window.location.href='/'
@@ -130,7 +141,7 @@ async function sendWater(){
             },
             body:JSON.stringify({
                 water:water,
-                time: 4000
+                time: 4000 // time calculated by water's input IMPORTANT
 
     
             })
@@ -142,14 +153,15 @@ async function sendWater(){
                 button_status.innerText = "DISABLED";
                 button_status.disabled = true;
                 button_status.style.backgroundColor = "#34495e" ;
-                $('#water-value').html('<label for="Amount" class="form__fieldblock">Wait for Watering ...</lab')
+                $('#water-value').html(disableAmount)
     
                 setTimeout(() => {
+                    alert('Watering is done');
                     button_status.disabled = false;
                     water_status.innerText="Water Status: Off"
                     button_status.innerText = "OFF";
                     button_status.style.backgroundColor = "#34495e" ;
-                    $('#water-value').html(' <input type="input" class="form__field" placeholder="Amount" name="Amount" id="water-amount" required /><label for="Amount" class="form__label">Amount</label><button class="button button-log" onclick="sendWater()" id="submit-water">Submit</button>')
+                    $('#water-value').html(enableAmount)
           
                 }, 5000);
                 
