@@ -11,6 +11,7 @@
   </head>
 
   <body>
+    
     <h1 style="margin: 0;">History</h1>
     <div class="container-table">
       <table class="log-table">
@@ -22,28 +23,27 @@
             <th>Last Watering Amount</th>
           </tr>
         </thead>
-        <tr>
-          <td>1001</td>
-          <td>2002</td>
-          <td>3003</td>
-          <td>4004</td>
-        </tr>
+        
         <!-- for each element in log list -->
-        <% for(var i = 0; i < 8; i++) { %> 
-            <tr>
-            <% for(var j = 0; j < 4; j++) { %>
-            <td>placeholder</td>
+        <% data.forEach(element => { %>
+          
 
-            <!-- logList[] = the list requeted from db  -->
-            <% } %>
+            <tr>
+              
+                <td><%= (new Date(element.time)).toLocaleString()%></td>
+                <td><%= element.light %></td>
+                <td><%= element.humid %></td>
+                <td><%= element.water %></td>
+              
             </tr>
-        <% } %>
+        <% }) %>
       </table>
       <div class="log-redirect">
-        <a class="button button-on" href="#">prev</a>
-        <a class="button button-on" href="#">next</a>
+        <a <% if(Number(id) == 0) { %> style="visibility: hidden;"<% } %> class="button button-on" href="/log?id=<%=Number(id)-9 %>">prev</a>
+        <a <% if(Number(id) +9 >= DocSize) { %> style="visibility: hidden;"<% } %>class="button button-on" href="/log?id=<%=Number(id)+9 %>">next</a>
         <a class="button button-on" href="/" style="position: absolute; right: 50px;">home</a>
       </div>
+      <div id="page"><%= (Number(id)/9+1) %> </div>
 
     </div>
   </body>
