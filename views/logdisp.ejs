@@ -7,6 +7,12 @@
     />
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../logdisp.css">
+    <%
+    function waterTickTomL(tick){
+      let numTick = Number(tick)
+      return Math.round(tick * 1000 / 225 *100)/100;
+    };%>
+  
     <title>Log Display</title>
   </head>
 
@@ -18,9 +24,9 @@
         <thead>
           <tr class="table-head">
             <th>Time</th>
-            <th>Light Level</th>
-            <th>Soil Humidity</th>
-            <th>Last Watering Amount</th>
+            <th>Light Index</th>
+            <th>Soil Humidity Index</th>
+            <th>Last Watering (mL)</th>
           </tr>
         </thead>
         
@@ -33,7 +39,7 @@
                 <td><%= (new Date(element.time)).toLocaleString()%></td>
                 <td><%= element.light %></td>
                 <td><%= element.humid %></td>
-                <td><%= element.water %></td>
+                <td><%= waterTickTomL(element.water) %></td>
               
             </tr>
         <% }) %>

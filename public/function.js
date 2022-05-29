@@ -19,6 +19,10 @@ setInterval(() => {
 const disableAmount = ' <label for="Amount" class="form__fieldblock">Wait for Watering ...</label>'
 const enableAmount = ' <input type="input" class="form__field" placeholder="Amount" name="Amount" id="water-amount" required /><label for="Amount" class="form__label">Amount</label><button class="button button-log" onclick="sendWater()" id="submit-water">Submit</button>'
 
+//by Natts: convert mL to stmProtocal (soc-called bytecode)
+function mLtoNodeByteCommand(water_amount){
+    return Math.round(water_amount*225/1000) +5; // bias 5 number
+}
 
 async function getInfo(){
 
@@ -54,10 +58,22 @@ const button_status = document.getElementById("button-status");
 const water_status = document.getElementById("water-status");
 // console.log("asd");
 
+
+//const template for on/off button
+const onHTML = "<p>ON</p>"
+const offHTML = "<p>OFF</p>"
+const lodingHTML = '<lottie-player src="https://assets2.lottiefiles.com/packages/lf20_Stt1R6.json" background="transparent"  speed="1.2" loop  autoplay></lottie-player>'
+
 async function btnStatus(){
     // console.log("wads"); 
     var result;
     if(button_status.innerText == "OFF"){
+        console.log(button_status.innerText)
+        // just for testing
+        button_status.innerHTML = lodingHTML;
+        button_status.setAttribute("loading", true);
+        // just for testing
+
         result = await fetch('/valveOn', {
 
             method: 'POST',
@@ -73,7 +89,7 @@ async function btnStatus(){
         if(result.status == "ok"){
             // console.log(result.body)
               water_status.innerText="Water Status: On"
-                button_status.innerText = "ON";
+                button_status.innerHTML = onHTML;
                 button_status.style.backgroundColor = "#1abc9c" ;
                 $('#water-value').html(disableAmount)
                 
@@ -85,7 +101,7 @@ async function btnStatus(){
       
 
     } else{
-
+        // console.log(button_status.innerText)
         result = await fetch('/valveOff', {
 
             method: 'POST',
@@ -109,7 +125,7 @@ async function btnStatus(){
                 alert('Cooldown is done');
                 
                 water_status.innerText="Water Status: Off"
-                button_status.innerText= "OFF";
+                button_status.innerHTML= offHTML;
                 button_status.style.backgroundColor = "#34495e" ;
                 $('#water-value').html(enableAmount)
                
@@ -128,7 +144,8 @@ async function btnStatus(){
 
 
 async function sendWater(){
-    const water = document.getElementById("water-amount").value;
+    const precalcWater = document.getElementById("water-amount").value;
+    const water = mLtoNodeByteCommand(precalcWater);
     // console.log(water)
     var result;
 

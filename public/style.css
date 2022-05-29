@@ -22,7 +22,6 @@ h3 {
 .button {
   display: block;
   width: fit-content;
-  height: 80 px;
   background-color: #1abc9c;
   border: none;
   color: white;
@@ -31,6 +30,39 @@ h3 {
   font-size: 25px;
   cursor: pointer;
   border-radius: 4px;
+}
+
+.button p {
+  color: white;
+  text-decoration: none;
+  font-size: 25px;
+  cursor: pointer;
+  margin: 0;
+}
+
+.button[loading]{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  width: 110px;
+  height: 55px;
+
+  /* background-color: #435a70; */
+  background-color: transparent;
+  /* border: 3px solid #16a085; */
+
+}
+.button[loading]:hover{
+  background-color: transparent;
+
+
+}
+
+.button lottie-player{
+  width: 120px;
+  height: 120px;
 }
 
 .button-on {
@@ -52,7 +84,7 @@ h3 {
 p {
   font-size: 14px;
   color: #888;
-  margin-bottom: 10px;
+  margin: 10px;
 }
 
 
@@ -63,9 +95,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* not suppose */
-  /* min-height: 100vh; */
-  /* not suppose */
+  margin: 30px;
   font-size: 1.5rem;
   background-color: white;
 }
