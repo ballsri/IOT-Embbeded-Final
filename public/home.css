@@ -9,6 +9,20 @@
     justify-content: center;
     gap: 30px;
 }
+/* for graph container */
+.container-env {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: fit-content;
+}
+
+/* appears twice in container-env so, just call it iframe */
+iframe {
+    flex-grow: 1;
+}
 
 .container-control {
     width: 300px;
@@ -26,15 +40,47 @@
     border: #8a8a8a solid 2px;
 }
 
+/* mid breakpoint: 
+    align control and info first, then graph with wider width */
+@media only screen and (max-width: 1204px) {
+    .body-container{
+        width: 650px;
+    }
+    .container-env {
+        order: 1;
+    }
+    iframe{
+        width: 600px;
+    }
+}
+
+/* small breakpoint:
+    rearrange order: info, control, graph
+    everything with 300px width */
 @media only screen and (max-width: 699px) {
-  .container-control {
-    width: 300px;
-    flex-grow: 0;
-  }
+    .body-container{
+        width: 300px;
+    }
+    .container-info {
+        order: -1;
+    }
+    .container-control {
+        width: 300px;
+        flex-grow: 0;
+        order: 0;
+    }
+    .container-env {
+        order: 1;
+    }
+
+    iframe {
+        width: 300px;
+        height: 225px;
+    }
 }
 
 .container-info {
-    
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -68,6 +114,7 @@
     margin-inline-end: 0px;
     font-weight: bold;
 }
+
 .pill p {
     font-size: 24px;
     color: rgb(255, 255, 255);
@@ -139,7 +186,7 @@
 
 .form__label {
     position: absolute;
-    top:0 ;
+    top: 0;
     display: block;
     transition: 0.2s;
     font-size: 1rem;
@@ -183,9 +230,7 @@
     background: transparent;
 }
 
-.button-log {
-
-}
+.button-log {}
 
 #main-table {
     padding: 0;

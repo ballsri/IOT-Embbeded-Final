@@ -7,12 +7,17 @@
   <link rel="stylesheet" href="../home.css" />
   <script src="../inputHandler.js"></script>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-  <title>Hee CONTROL</title>
+  <title>CONTROL</title>
 </head>
 
 <body>
-  <h1>ESP8266 Hee CONTROL</h1>
+  <h1>Smart Watering Controller</h1>
   <div class="body-container">
+    <!-- Daily Env Part -->
+    <div class="container-env">
+      <iframe style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);" width="480" height="360" src="https://charts.mongodb.com/charts-embedded-sys-csjfj/embed/charts?id=62964bf0-cb9e-4ae3-8913-564855462547&maxDataAge=3600&theme=light&autoRefresh=true"></iframe>
+      <iframe style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);" width="480" height="360" src="https://charts.mongodb.com/charts-embedded-sys-csjfj/embed/charts?id=6296540c-cb9e-4e12-8134-5648554f7599&maxDataAge=3600&theme=light&autoRefresh=true"></iframe>
+    </div>
     <!-- controller part -->
     <div class="container-control">
       <input type="hidden"  id="time" value="<%= timeout %>" />
