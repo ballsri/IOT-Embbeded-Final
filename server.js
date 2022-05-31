@@ -17,17 +17,30 @@ const http = require('http');
 const server = http.createServer(app);
 
 
+
+// Configuration
+const cooldown = 5000;
+const wateringTime = 4000;
+const constLight = 500;  
+const constHumid = 1500;
+
+
+
+
+// Global Variable
 var isActive = false;
 var isDisabled = false;
 var isCooldown = false;
 var timeend = -1;
 var time = -1;
 var cooldownEnd = -1;
-var cooldown = 5000;
 
+
+
+// IP
 const nodeIp = 'http://192.168.100.241/'
 
-
+// Database Schema
 const data = mongoose.model('data', new mongoose.Schema({
     humid: {
         type: Number
@@ -45,21 +58,57 @@ const data = mongoose.model('data', new mongoose.Schema({
 }, { database: "stm", collection: 'data' }));
 
 
-
+// Function
 function getTimeLeft(te) {
     if (te === -1) return -1;
     return te - new Date().getTime()
 }
 
+function setWaterringAndCooldown(time){
+    isDisabled = true;
+    isActive = true
+    timeend = new Date().getTime() + Number(time);
+    setTimeout(() => {
+        isDisabled = false
+        isActive = false;
+        time = -1;
+        timeend = -1;
+        timeout = null
+        isCooldown = true;
+        cooldownEnd = new Date().getTime() + Number(1000 * 5); // Cooldown Time
+        setTimeout(() => {
+            isCooldown = false;
+            cooldownEnd = -1;
+        }, cooldown);
+    }, time);
 
+}
+
+// Schedule
 // set interval to read value from sensor as " sec minutes hour day/months months day/weeks"
 cron.schedule("0 */10 * * * *", () => { 
     request(nodeIp + 'getInfo', { json: true }, async (err, response, body) => {
-        if (err || response === null || body === null || isNaN(response.body.humid) || isNaN(response.body.light) || isNaN(response.body.water)) return;
+        var humid = response.body.humid;
+        var light = response.body.light;
+        var humid = response.body.water;
+        // Exit when value is unreadable
+        if (err || response === null || body === null || humid == '' || light =='' || water == '') return;
+
+        // Water when value is reached
+        if(Number(light) > constLight && Number(humid) < constHumid       ){
+            const water = 150;
+            request(nodeIp + 'water?amount=' + water, function (error, response, body) {
+                time = wateringTime; //ms
+                setWaterringAndCooldown(time)
+            });
+        }
+
+
+        // Create on db
         await data.create({
-            humid: response.body.humid,
-            light: response.body.light,
-            water: response.body.water
+            humid: humid,
+            light: light,
+            water: water
         })
     });
 })
@@ -79,26 +128,12 @@ app.post('/getInfo', async (req, res) => {
 
 app.post('/water', (req, res) => {
     if (isDisabled) return res.json({ status: 'error' })
+
     const water = Number(req.body.water);
-    // console.log(water)
+
     request(nodeIp + 'water?amount=' + water, function (error, response, body) {
-        time = req.body.time; //ms
-        isDisabled = true;
-        isActive = true
-        timeend = new Date().getTime() + Number(time);
-        setTimeout(() => {
-            isDisabled = false
-            isActive = false;
-            time = -1;
-            timeend = -1;
-            timeout = null
-            isCooldown = true;
-            cooldownEnd = new Date().getTime() + Number(1000 * 5); // Cooldown Time
-            setTimeout(() => {
-                isCooldown = false;
-                cooldownEnd = -1;
-            }, cooldown);
-        }, time);
+        time = wateringTime; //ms
+        setWaterringAndCooldown(time)
         res.json({ status: 'ok' })
     });
 })
@@ -106,6 +141,7 @@ app.post('/water', (req, res) => {
 
 app.get('/log', async (req, res) => {
     var id = req.query.id
+    
     var data_page = await data.aggregate([
         {
             $sort: { time: -1 }

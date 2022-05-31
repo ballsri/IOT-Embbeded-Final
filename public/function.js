@@ -1,8 +1,8 @@
 // Controller part
 // IMPORTANT
-var recheck = 60 * 1000 * 10; // recheck from db
-var waterTime = 4000; // Time consuming while watering
-var cooldownTime = 5000; // Cooling down after watering time
+const recheck = 60 * 1000 * 10; // recheck from db
+const waterTime = 4000; // Time consuming while watering
+const cooldownTime = 5000; // Cooling down after watering time
 // IMPORTANT
 
 // HTML GETTER
@@ -18,7 +18,7 @@ const onHTML = "<p>ON</p>"
 const offHTML = "<p>OFF</p>"
 const loadingHTML = '<lottie-player src="https://assets2.lottiefiles.com/packages/lf20_Stt1R6.json" background="transparent"  speed="1.2" loop  autoplay></lottie-player>'
 
-// Chang button srcipt
+// Change button srcipt
 function loading() {
     button_status.innerHTML = loadingHTML;
     button_status.setAttribute("loading", '');
@@ -62,6 +62,8 @@ function coolToOff() {
     $('#water-value').html(enableAmount)
 }
 
+
+// timeout function
 function setCooldown(ct) {
     if (ct >= 0) {
         setTimeout(() => {
@@ -84,14 +86,14 @@ function setWaterTime(wt) {
 }
 
 
-//check time
+// check time from backend
 var timeout = $('#time').val();
 setWaterTime(timeout);
 
 var cooldown = $('#cooldown').val();
 setCooldown(cooldown);
 
-
+// update info from db
 setInterval(() => {
     getInfo()
 }, recheck);
@@ -101,6 +103,7 @@ function mLtoNodeByteCommand(water_amount) {
     return Math.round(water_amount * 225 / 1000) + 5; // bias 5 number
 }
 
+// Retrieve info from db
 async function getInfo() {
     const result = await fetch('/getInfo', {
         method: 'POST',
@@ -121,18 +124,17 @@ async function getInfo() {
 
 
     } else {
-        // alert(result.code)
-        // window.location.href='/'
+       
     }
 }
 
 
 
-
+// Change button 
 async function btnStatus() {
-    // console.log("wads"); 
+
     var result;
-    // console.log(button_status.innerHTML== offHTML)
+
     if (isOn.value == 'off') {
 
         loading();
@@ -188,7 +190,7 @@ async function btnStatus() {
 
 }
 
-
+// Send amount of water to backend
 async function sendWater() {
     const precalcWater = document.getElementById("water-amount").value;
     const water = mLtoNodeByteCommand(precalcWater);
