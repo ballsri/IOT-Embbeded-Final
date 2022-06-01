@@ -6,12 +6,16 @@
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="../home.css" />
   <script src="../inputHandler.js"></script>
+  <script src="../function.js"></script>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <title>CONTROL</title>
 </head>
 
 <body>
   <h1>Smart Watering Controller</h1>
+  <div>
+    <div id="clock" name="clock"></div>
+  </div>
   <div class="body-container">
     <!-- Daily Env Part -->
     <div class="container-env">
@@ -23,6 +27,7 @@
       <input type="hidden"  id="time" value="<%= timeout %>" />
       <input type="hidden"  id="cooldown" value="<%= cooldownEnd %>" />
       <input type="hidden"  id="isOn" value="<% if(isActive){ %>on<% }else{%>off<%}%>" />
+      <input type="hidden"  id="cooldownDate" value="<%= cooldownDate %>" />
       <p style="font-size: 24px" id="water-status">
         Water Status: <% if(isActive){ %> On <% }else{%> Off <%}%>
       </p>
@@ -66,21 +71,24 @@
 
                     <%} %>
               </div>
+              <div id = "cdTime" class = "hidden">Cooldown
+                <div id = "cooldownTime"></div>
+              </div>
     </div>
 
     <!-- info part -->
     <div class="container-info">
-      <h2>Real-time Info</h2>
-      <div class="pill">
-        <h6>Soil Humidity</h6>
-        <p id="humid">
-          <%= latest[0].humid %>
-        </p>
-      </div>
+      <h2>Information</h2>
       <div class="pill">
         <h6>Light</h6>
         <p id="light">
           <%= latest[0].light %>
+        </p>
+      </div>
+      <div class="pill">
+        <h6>Soil Humidity</h6>
+        <p id="humid">
+          <%= latest[0].humid %>
         </p>
       </div>
       <div class="pill">
@@ -100,7 +108,41 @@
   </div>
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
     integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
-  <script src="../function.js"></script>
+    <script>
+      setInterval(() => {
+        var realtime = new Date();
+        var hour = realtime.getHours();
+        var minute = realtime.getMinutes();
+        var second = realtime.getSeconds();
+        var ampm = (hour < 12) ? "AM" : "PM";
+        var cdtime = new Date(document.getElementById("cooldownDate").value);
+        var timeDif = cdtime.getTime() - realtime.getTime();
+        if(timeDif < 0) timeDif = 0;
+        timeDif = Math.floor(timeDif/1000);
+        var hourleft = Math.floor(timeDif/3600);
+        timeDif = timeDif%3600;
+        var minuteleft = Math.floor(timeDif/60);
+        timeDif = timeDif % 60;
+        var secondleft = timeDif;
+        if((hourleft > 0 || minuteleft > 0 || secondleft > 0)){
+          document.getElementById("cdTime").classList.remove("hidden");
+        }
+        else{
+          document.getElementById("cdTime").classList.add("hidden");
+        }
+        hourleft = ("0" + hourleft).slice(-2);
+        minuteleft = ("0" + minuteleft).slice(-2);
+        secondleft  = ("0" + secondleft).slice(-2);
+        hour = hour%12;
+        hour = ("0" + hour).slice(-2);
+        minute = ("0" + minute).slice(-2);
+        second  = ("0" + second).slice(-2);
+        document.getElementById("clock").innerHTML = hour + " : " + minute + " : " + second + " " + ampm;
+        document.getElementById("cooldownTime").innerHTML = hourleft + " : " + minuteleft + " : " + secondleft;
+        // var t = setTimeout(realtimeClock,500);
+      }, 1000);
+      
+    </script>
 </body>
 
 </html>

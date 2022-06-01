@@ -219,6 +219,7 @@ async function sendWater() {
         offToDis();
 
         setWaterTime(waterTime);
+        
 
     } else {
         alert("Error occured, can't turn on")

@@ -12,7 +12,7 @@ app.use(express.static(path.join(__dirname, '/public')))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.set('port', 80);
+app.set('port', 8000);
 const http = require('http');
 const server = http.createServer(app);
 
@@ -34,6 +34,7 @@ var isCooldown = false;
 var timeend = -1;
 var time = -1;
 var cooldownEnd = -1;
+var cooldownDate = (isCooldown) ? new Date(new Date().getTime() + cooldown) : new Date();
 
 
 
@@ -75,7 +76,7 @@ function setWaterringAndCooldown(time){
         timeend = -1;
         timeout = null
         isCooldown = true;
-        cooldownEnd = new Date().getTime() + Number(1000 * 5); // Cooldown Time
+        cooldownEnd = new Date().getTime() + cooldown; // Cooldown Time
         setTimeout(() => {
             isCooldown = false;
             cooldownEnd = -1;
@@ -116,7 +117,7 @@ cron.schedule("0 */10 * * * *", () => {
 
 app.get('/', async (req, res) => {
     var latest = await data.find({}).sort({ time: -1 }).limit(1)
-    res.render('index', { isActive: isActive, isDisabled: isDisabled, isCooldown: isCooldown, timeout: getTimeLeft(timeend), latest: latest, cooldownEnd: getTimeLeft(cooldownEnd) });
+    res.render('index', { isActive: isActive, isDisabled: isDisabled, isCooldown: isCooldown, timeout: getTimeLeft(timeend), latest: latest , cooldownEnd: getTimeLeft(cooldownEnd), cooldownDate : cooldownDate});
 })
 
 
@@ -171,7 +172,7 @@ app.post('/valveOff', (req, res) => {
     isCooldown = true;
     isActive = false;
     request(nodeIp + 'valveOff', function (error, response, body) {
-        cooldownEnd = new Date().getTime() + Number(5000); // Cooldown Time
+        cooldownEnd = new Date().getTime() + cooldown; // Cooldown Time
         setTimeout(() => {
             isCooldown = false;
             cooldownEnd = -1;
