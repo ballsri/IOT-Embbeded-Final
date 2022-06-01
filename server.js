@@ -12,7 +12,7 @@ app.use(express.static(path.join(__dirname, '/public')))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.set('port', 8000);
+app.set('port', 80);
 const http = require('http');
 const server = http.createServer(app);
 
