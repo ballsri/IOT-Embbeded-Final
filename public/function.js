@@ -51,6 +51,7 @@ function disToCool() {
     button_status.innerText = "COOLING DOWN";
     button_status.disabled = true;
     $('#water-value').html(disableAmount)
+    document.getElementById("cdTime").classList.remove("hidden");
 }
 function coolToOff() {
     isOn.value = 'off';
@@ -60,20 +61,80 @@ function coolToOff() {
     button_status.disabled = false;
     button_status.classList.add('button-off')
     $('#water-value').html(enableAmount)
+    document.getElementById("cdTime").classList.add("hidden");
+    document.getElementById("cooldownTime").innerHTML=""
 }
 
 
-// timeout function
-function setCooldown(ct) {
-    if (ct >= 0) {
-        setTimeout(() => {
+// Counter function
+
+// Realtime Clock
+setInterval(() => {
+    var realtime = new Date();
+    var hour = realtime.getHours();
+    var minute = realtime.getMinutes();
+    var second = realtime.getSeconds();
+    var ampm = (hour < 12) ? "AM" : "PM";
+    
+  
+    hour = hour%12;
+    hour = ("0" + hour).slice(-2);
+    minute = ("0" + minute).slice(-2);
+    second  = ("0" + second).slice(-2);
+    document.getElementById("clock").innerHTML = hour + " : " + minute + " : " + second + " " + ampm;
+  }, 1000);
+
+
+// Cooldown counter
+var cdInterval;
+var counter = cooldownTime;
+function fnCD(ct,timeend) {
+            
+    var cdtime = ct;
+    var now = new Date().getTime();
+    var timeDif = timeend - now;
+    if(timeDif < 0) timeDif = 0;
+    timeDif = Math.floor(timeDif/1000);
+    var hourleft = Math.floor(timeDif/3600);
+    timeDif = timeDif%3600;
+    var minuteleft = Math.floor(timeDif/60);
+    timeDif = timeDif % 60;
+    var secondleft = timeDif;
+ 
+    hourleft = ("0" + hourleft).slice(-2);
+    minuteleft = ("0" + minuteleft).slice(-2);
+    secondleft  = ("0" + secondleft).slice(-2);
+
+    document.getElementById("cooldownTime").innerHTML = hourleft + " : " + minuteleft + " : " + secondleft;
+    
+    // console.log(counter)
+    if(now > timeend){
             alert('Cooldown is done, Smart Watering is be able to use');
+            clearInterval(cdInterval);
             coolToOff()
-        }, ct);
+    }
+  }
+// Cooldown interval
+function setCooldown(ct) {
+    
+    ct = Number(ct)
+    if (ct >= 0) {
+    
+        counter = ct;
+        var timeend = new Date().getTime()+ct+1500
+        
+     
+        document.getElementById("cdTime").classList.remove("hidden");
+        cdInterval = setInterval(()=>{
+            fnCD(counter,timeend)
+            counter -= 1000;
+        }, 1000);
+        
+        
 
     }
 }
-
+// Watering time
 function setWaterTime(wt) {
     if (wt >= 0) {
         setTimeout(() => {
@@ -178,8 +239,8 @@ async function btnStatus() {
 
         if (result.status == "ok") {
             button_status.removeAttribute("loading");
-            disToCool()
             setCooldown(cooldownTime);
+            disToCool()
         } else {
             alert("Error occured, can't turn off")
             window.location.href = '/'

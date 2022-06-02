@@ -39,7 +39,7 @@ var cooldownDate = (isCooldown) ? new Date(new Date().getTime() + cooldown) : ne
 
 
 // IP
-const nodeIp = 'http://192.168.100.241/'
+const nodeIp = 'http://192.168.198.206/'
 
 // Database Schema
 const data = mongoose.model('data', new mongoose.Schema({
@@ -91,9 +91,9 @@ cron.schedule("0 */10 * * * *", () => {
     request(nodeIp + 'getInfo', { json: true }, async (err, response, body) => {
         var humid = response.body.humid;
         var light = response.body.light;
-        var humid = response.body.water;
+        var water = response.body.water;
         // Exit when value is unreadable
-        if (err || response === null || body === null || humid == '' || light =='' || water == '') return;
+        if (err || response === null || body === null || humid == '' || light =='' || water == '' || isNaN(humid) || isNaN(water) || isNaN(light)) return;
 
         // Water when value is reached
         if(Number(light) > constLight && Number(humid) < constHumid       ){

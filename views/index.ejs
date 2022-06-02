@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no\" />
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="../home.css" />
-  <script src="../inputHandler.js"></script>
-  <script src="../function.js"></script>
+ 
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <title>CONTROL</title>
 </head>
@@ -62,7 +61,7 @@
                   <%} else { %>
                     <div class="form__box field" id="water-value">
                       <input type="number" class="form__field" placeholder="Amount" name="Amount" id="water-amount"
-                        required min="4.44" max="1114.44" step="4.44" onchange="waterAmountChangeHandler()" />
+                        required min="4.44" max="1114.44" step="4.44" onchange="waterAmountChangeHandler()"/>
                       <label for="water-amount" class="form__label">Amount (mL)</label>
                     </div>
                     <button class="button button-log" id="submit-water" onclick="sendWater()">
@@ -108,41 +107,9 @@
   </div>
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
     integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
-    <script>
-      setInterval(() => {
-        var realtime = new Date();
-        var hour = realtime.getHours();
-        var minute = realtime.getMinutes();
-        var second = realtime.getSeconds();
-        var ampm = (hour < 12) ? "AM" : "PM";
-        var cdtime = new Date(document.getElementById("cooldownDate").value);
-        var timeDif = cdtime.getTime() - realtime.getTime();
-        if(timeDif < 0) timeDif = 0;
-        timeDif = Math.floor(timeDif/1000);
-        var hourleft = Math.floor(timeDif/3600);
-        timeDif = timeDif%3600;
-        var minuteleft = Math.floor(timeDif/60);
-        timeDif = timeDif % 60;
-        var secondleft = timeDif;
-        if((hourleft > 0 || minuteleft > 0 || secondleft > 0)){
-          document.getElementById("cdTime").classList.remove("hidden");
-        }
-        else{
-          document.getElementById("cdTime").classList.add("hidden");
-        }
-        hourleft = ("0" + hourleft).slice(-2);
-        minuteleft = ("0" + minuteleft).slice(-2);
-        secondleft  = ("0" + secondleft).slice(-2);
-        hour = hour%12;
-        hour = ("0" + hour).slice(-2);
-        minute = ("0" + minute).slice(-2);
-        second  = ("0" + second).slice(-2);
-        document.getElementById("clock").innerHTML = hour + " : " + minute + " : " + second + " " + ampm;
-        document.getElementById("cooldownTime").innerHTML = hourleft + " : " + minuteleft + " : " + secondleft;
-        // var t = setTimeout(realtimeClock,500);
-      }, 1000);
-      
-    </script>
+    <script src="../inputHandler.js"></script>
+    <script src="../function.js"></script>
+ 
 </body>
 
 </html>
