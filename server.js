@@ -39,7 +39,7 @@ var cooldownDate = (isCooldown) ? new Date(new Date().getTime() + cooldown) : ne
 
 
 // IP
-const nodeIp = 'http://192.168.198.206/'
+const nodeIp = 'http://192.168.122.206/'
 
 // Database Schema
 const data = mongoose.model('data', new mongoose.Schema({
@@ -97,11 +97,14 @@ cron.schedule("0 */10 * * * *", () => {
 
         // Water when value is reached
         if(Number(light) > constLight && Number(humid) < constHumid       ){
-            const water = 150;
+            const water = 50;
             request(nodeIp + 'water?amount=' + water, function (error, response, body) {
                 time = wateringTime; //ms
                 setWaterringAndCooldown(time)
             });
+            setTimeout(() => {
+                
+            }, wateringTime);
         }
 
 

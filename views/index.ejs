@@ -85,21 +85,21 @@
     <div class="container-info">
       <h2>Information</h2>
       <div class="pill">
-        <h6>Light</h6>
+        <h6>Light </h6>
         <p id="light">
-          <%= latest[0].light %>
+          <%= Math.round((Number(latest[0].light)-500)/(33-5)*100)/100 %> %
         </p>
       </div>
       <div class="pill">
         <h6>Soil Humidity</h6>
         <p id="humid">
-          <%= latest[0].humid %>
+          <%= Math.round((Number(latest[0].humid)/32)*100)/100 %> %
         </p>
       </div>
       <div class="pill">
-        <h6>Prev Watering</h6>
+        <h6>Prev Watering </h6>
         <p id="water">
-          <%= waterTickTomL(latest[0].water) %>
+          <%= waterTickTomL(latest[0].water) %> mL
         </p>
       </div>
       <p>updated: <%= (new Date(latest[0].time)).toLocaleString() %>

@@ -24,9 +24,9 @@
         <thead>
           <tr class="table-head">
             <th>Time</th>
-            <th>Light Index</th>
-            <th>Soil Humidity Index</th>
-            <th>Last Watering (mL)</th>
+            <th>Light Intensity</th>
+            <th>Soil Humidity</th>
+            <th>Last Watering</th>
           </tr>
         </thead>
         
@@ -37,9 +37,9 @@
             <tr>
               
                 <td><%= (new Date(element.time)).toLocaleString()%></td>
-                <td><%= element.light %></td>
-                <td><%= element.humid %></td>
-                <td><%= waterTickTomL(element.water) %></td>
+                <td><%= Math.round((Number(element.light)-500)/(33-5)*100)/100 %>  %> %</td>
+                <td><%=  Math.round((Number(element.humid)/32)*100)/100  %> %</td>
+                <td><%= waterTickTomL(element.water) %> mL</td>
               
             </tr>
         <% }) %>
