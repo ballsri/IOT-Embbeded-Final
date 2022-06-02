@@ -75,6 +75,12 @@
               </div>
     </div>
 
+    <%
+    function waterTickTomL(tick){
+      let numTick = Number(tick)
+      return Math.round(tick * 2.22 *100)/100;
+    };%>
+
     <!-- info part -->
     <div class="container-info">
       <h2>Information</h2>
@@ -93,16 +99,18 @@
       <div class="pill">
         <h6>Prev Watering</h6>
         <p id="water">
-          <%= latest[0].water %>
+          <%= waterTickTomL(latest[0].water) %>
         </p>
       </div>
       <p>updated: <%= (new Date(latest[0].time)).toLocaleString() %>
       </p>
-      <p style="font-size: 24px">get Information</p>
+      <a class="button button-get-info" style="margin: 0px auto 35px" href='/refresh'>Refresh</a>
+      <p style="font-size: 24px">History</p>
       <!-- <a class="button button-getinformation" href="/getinformation"
           >SubmitXnoNeed</a
         > -->
       <a class="button button-log" style="margin: 0px auto 35px" href="/log?id=0">log</a>
+ 
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"

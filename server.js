@@ -120,6 +120,27 @@ app.get('/', async (req, res) => {
     res.render('index', { isActive: isActive, isDisabled: isDisabled, isCooldown: isCooldown, timeout: getTimeLeft(timeend), latest: latest , cooldownEnd: getTimeLeft(cooldownEnd), cooldownDate : cooldownDate});
 })
 
+app.get('/refresh', async (req,res)=>{
+    request(nodeIp + 'getInfo', { json: true }, async (err, response, body) => {
+        var humid = response.body.humid;
+        var light = response.body.light;
+        var water = response.body.water;
+        // Exit when value is unreadable
+        if (err || response === null || body === null || humid == '' || light =='' || water == '' || isNaN(humid) || isNaN(water) || isNaN(light)) return res.redirect('/');
+
+        // Create on db
+        await data.create({
+            humid: humid,
+            light: light,
+            water: water
+        })
+        res.redirect('/')
+
+
+
+    });
+})
+
 
 app.post('/getInfo', async (req, res) => {
     res.json(await data.find({}).sort({ time: -1 }).limit(1))
